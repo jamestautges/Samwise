@@ -12,7 +12,7 @@ module.exports = (robot) ->
 			else
 				nextmeeting.setDate(currdate)
 		else if currday <=1
-			nextmeeting.setDate(2-currday)
+			nextmeeting.setDate(currdate+2-currday)
 		else
 			nextmeeting.setDate(currdate+7-currday+2)
 		newstring = nextmeeting.toDateString()
