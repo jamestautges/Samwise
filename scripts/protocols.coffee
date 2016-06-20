@@ -1,8 +1,10 @@
 GoogleSpreadsheet = require 'google-spreadsheet'
 Conversation = require 'hubot-conversation'
 
+# Spreadsheet key
 doc = new GoogleSpreadsheet '1nAs4V7Dob68muSdjjVSGsyk46xlg4sWB1GoYl582nCM'
 
+# Rows to search in the sheet
 rowsInSheet = 3
 
 module.exports = (robot) ->
@@ -29,9 +31,7 @@ module.exports = (robot) ->
 				row = rows[key]
 				if row.task.toLowerCase() == request.toLowerCase()
 					found = true
-					res.reply row.protocol
-					res.reply "You might want to consult #{row.student} and #{row.mentor}."
-					res.reply "Would you like me to contact them?"
+					res.reply "#{row.protocol}\nYou might want to consult #{row.student} and #{row.mentor}.\nWould you like me to contact them?"
 					students = [row.student, row.mentor]
 					
 					# Offer contact with the experts listed in the sheet
