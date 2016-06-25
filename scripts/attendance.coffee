@@ -1,6 +1,6 @@
 module.exports = (robot) ->
 	
-	robot.respond /I\'m not attending the next Tuesday meeting/i, (res) ->
+	robot.respond /I\'m not [attending|coming to] the next Tuesday meeting/i, (res) ->
 		person = "attendance:" + res.message.user.name
 		nextmeeting = new Date
 		currday = nextmeeting.getDay()
@@ -27,3 +27,17 @@ module.exports = (robot) ->
 		else
 			robot.brain.set person, newstring
 			res.send "Thanks for letting me know that you'll miss the next meeting (on #{newstring}), #{res.message.user.name}"
+			
+	robot.respond /I'm [attending|coming to] the next Tuesday meeting/i, (res) ->
+		person = "attendance:" + res.message.user.name
+		attendance = robot.brain.get(person)
+		currday = new Date
+		if attendance?
+			recorded = new Date(attendance)
+			if recorded.getTime() < currday.getTime()
+				res.send "I already have you attending the next meeting, #{res.message.user.name}"
+			else
+				robot.brain.set person, "0"
+				res.send "I have registered that you will be attending the next meeting, #{res.message.user.name}"
+		else
+			res.send "I already have you attending the next meeting, #{res.message.user.name}"
